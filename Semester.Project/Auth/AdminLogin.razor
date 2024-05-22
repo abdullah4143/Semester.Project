@@ -1,0 +1,55 @@
+﻿@page "/admin"
+@layout AuthLayout
+
+@inject NavigationManager NM
+@inject AuthServices AuthServices
+<h3>AdminLogin</h3>
+
+<EditForm Model="_admin" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <InputText id="Email" class="form-control" @bind-Value="_admin.Email"/>
+    </div>
+
+    <div class="form-group">
+        <label for="Password">Password</label>
+        <InputText id="Password" type="password" class="form-control" @bind-Value="_admin.Password" />
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Login</button>
+    </div>
+
+    <br />
+    @if (_showerror)
+    {
+        <div class="alert alert-danger" role="alert">
+            Invalid Email or Password
+        </div>
+    }
+
+
+</EditForm>
+
+
+@code {
+    private Admin _admin = new Admin();
+    private bool _showerror = false;
+
+    private void HandleValidSubmit()
+    {
+        var verified = AuthServices.VerifyAdmin(_admin.Email, _admin.Password);
+        if (verified)
+        {
+            NM.NavigateTo("/admin/dashboard");
+        }
+        else
+        {
+            _showerror = true;
+        }
+        Console.WriteLine("OnValidSubmit");
+    }
+}

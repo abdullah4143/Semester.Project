@@ -1,0 +1,52 @@
+﻿@page "/explore/category/{catagory_id:int}/{email?}"
+@inject BlogsService BlogsService
+@inject NavigationManager NavigationManager
+@inject CatagoriesService CatagoriesService
+@layout ProfileLayout
+
+
+
+<div class="container mt-3">
+    <h3 class="text-center my-4" ><Strong>Exploring: </Strong>@_cat.catagory_name</h3>
+
+    @foreach(var item in _blogs)
+    {
+        <div class="card my-3">
+            <div class="card-header">
+                <h3>@item.title</h3>
+            </div>
+            <div class="card-body">
+                <p>@(item.content.Length > 20 ? item.content.Substring(0, 20) + "..." : item.content)</p>
+                <p>@item.publish_date</p
+                <button class="btn btn-outline-dark" @onclick="()=>HandleExplore(item.blog_id)">Explore</button>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+@code {
+    [Parameter]
+    public int catagory_id { get; set; }
+
+    [Parameter]
+    public string ?email { get; set; }
+
+    public Catagory _cat = new Catagory();
+
+
+    private List<Blog> _blogs = new List<Blog>();
+
+    protected override void OnInitialized()
+    {
+        _blogs = BlogsService.GetBlogByCat(catagory_id);
+        _cat = CatagoriesService.GetCatagory(catagory_id);
+    }
+
+        private void HandleExplore(int blog_id)
+    {
+        NavigationManager.NavigateTo($"/explore/blogs/{blog_id}/{email}");
+    }
+
+}

@@ -1,0 +1,36 @@
+﻿@inject BlogsService BlogService
+@inject AdminService AdminService
+@page "/admin/removeblogs"
+@layout AdminLayout
+
+<h3>RemoveBlogs</h3>
+<div class="container">
+
+    @foreach (var item in _blogs)
+    {
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">@item.title</div>
+                <div class="card-text">@item.content</div>
+                <div class="card-link"><button class="btn btn-outline-danger" @onclick="()=>HandleRemove(item.blog_id)">X</button></div>
+            </div>
+        </div>
+    }
+    
+</div>
+
+@code {
+    public List<Blog> _blogs = new List<Blog>();
+    public Blog _blog = new Blog();
+    
+    protected override void OnInitialized()
+    {
+        _blogs = BlogService.GetBlogs();
+    }
+
+    private void HandleRemove(int i)
+    {
+        AdminService.deleteBlog(i);
+        _blogs = BlogService.GetBlogs();
+    }
+}

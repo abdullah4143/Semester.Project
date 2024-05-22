@@ -1,0 +1,113 @@
+﻿@inject BlogsService BlogService
+@inject CatagoriesService CatagoriesService
+@inject NavigationManager NavigationManager
+
+<!-- Logo + Text -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 order-sm-2">
+            <img src="/Transparent logo.png" class="img-fluid" alt="Image">
+        </div>
+        <div class="col-sm-6 order-sm-1 d-flex justify-content-center align-items-center" style="padding: 1.5rem;">
+            <h2 class="text-center">The Writer's Club</h2>
+            <p class="text-center"></p>
+
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<!-- Catagories Card -->
+
+
+<div class="container">
+    <div class="row">
+        @foreach (var category in _catagories.Take(VisibleCount))
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card" >
+                    <div class="card-body">
+                        <h5 class="card-title">@category.catagory_name</h5>
+                        <button class="btn btn-outline-info" @onclick="()=>HandleExplore1(category.catagory_id)">Explore</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="d-flex justify-content-center " >
+        @if (VisibleCount < _catagories.Count)
+        {
+            <div class="btn btn-outline mx-3" @onclick="ShowMore">Show More</div>
+        }
+
+        @if (VisibleCount > 4)
+        {
+            <div class="btn btn-outline mx-3" @onclick="ShowLess">Show Less</div>
+
+        }
+    </div>
+    
+</div>
+<hr />
+
+<!-- Blogs Display -->
+
+<div class="container">
+
+    @foreach(var item in _blogs)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                <h3>@item.title</h3>
+            </div>
+            <div class="card-body">
+                <p>@(item.content.Length > 20 ? item.content.Substring(0, 20) + "..." : item.content)</p>
+                <p>@item.publish_date</p
+                <button class="btn btn-outline-dark" @onclick="()=>HandleExplore(item.blog_id)">Explore</button>
+            </div>
+        </div>
+    }
+
+</div>
+
+@code{
+    private List<Catagory> _catagories = new List<Catagory>();
+    private List<Blog> _blogs = new List<Blog>();
+
+    [Parameter]
+    public string? email { get; set; }
+
+    // initial visible count
+    private int VisibleCount = 4;
+
+    // show less button
+    private void ShowLess()
+    {
+        VisibleCount = VisibleCount - 4;
+    }
+
+    //show more button
+    private void ShowMore()
+    {
+        VisibleCount = VisibleCount + 4;
+    }
+
+    private void HandleExplore(int blog_id)
+    {
+        NavigationManager.NavigateTo($"/explore/blogs/{blog_id}/{email}");
+    }
+
+    private void HandleExplore1(int catagory_id)
+    {
+        NavigationManager.NavigateTo($"/explore/category/{catagory_id}/{email}");
+    }
+
+    protected override void OnInitialized()
+    {
+        _catagories = CatagoriesService.GetCatagories();
+        _blogs = BlogService.GetRecentBlogs();
+    }
+
+}

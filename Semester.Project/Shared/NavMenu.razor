@@ -1,0 +1,46 @@
+﻿
+<div class="container">
+    <nav class="navbar navbar-expand-md bg-opacity-50">
+        <a class="navbar-brand h1" href="#">@email</a>
+
+        <button class="btn btn-outline-success navbar-toggler" type="button" @onclick="ToggleNavMenu">
+            <span class="oi oi-menu"></span>
+        </button>
+        <div class="@NavMenuCssClass" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+
+
+                <li class="nav-item">
+                    <NavLink class="nav-link px-3" href="@($"/profile/edit-user/{email}")">Edit Personal Details</NavLink>
+                </li>
+
+                <li class="nav-item">
+                    <NavLink class="nav-link px-3" href="@($"/profile/manage-blogs/{email}")">Manage Blogs</NavLink>
+                </li>
+                
+                <li class="nav-item">
+                    <NavLink class="nav-link px-3" href="@($"/profile/view-blogs/{email}")">View Blogs</NavLink>
+                </li>
+               
+            </ul>
+        </div>
+    </nav>
+</div>
+
+@code {
+
+    [Parameter]
+    public string email { get; set; }
+
+
+    private bool collapseNavMenu = true;
+
+    public string? UserName { get; set; }
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse navbar-collapse" : "navbar-collapse";
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

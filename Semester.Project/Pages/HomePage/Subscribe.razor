@@ -1,0 +1,64 @@
+﻿@inject NewsLetterService _newsLetterService
+<div class="container">
+
+
+    <div class="row py-5">
+
+        <div class="col-md-6">
+            <h2>Sign up for our newsletter</h2>
+            <p>
+                Get updates on new uploads and popular blogs that showcase the creativity of writers,
+                Updates on top blogs and also on new trends and more popular topics that are being discussed
+            </p>
+        </div>
+
+        <div class="col-md-6">
+
+            <EditForm Model="_newsLetter" OnValidSubmit="HandleValidSubmit">
+                <div class="form-group">
+                    <label for="Name">Name</label>
+                    <InputText id="Name" class="form-control" @bind-Value="_newsLetter.name" />
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Email">Email</label>
+                    <InputText id="Email" class="form-control" @bind-Value="_newsLetter.email" />
+                </div>
+                <br />
+                <div class="form-group">
+                    <button type="submit" class="btn btn-outline-success">Subscribe</button>
+                </div>
+            </EditForm>
+        </div>
+
+        @if (done != null)
+        {
+            <div class="col-md-12">
+                @if (done == true)
+                {
+                    <div class="alert alert-success" role="alert">
+                        You have successfully subscribed to our newsletter
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger" role="alert">
+                        You had already subscribed to our newsletter
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
+</div>
+
+@code {
+    public NewsLetter _newsLetter = new NewsLetter();
+    private bool ?done { get; set; } = null;
+    private void HandleValidSubmit()
+    {
+
+         done = _newsLetterService.AddSubscriber(_newsLetter);
+    }
+}

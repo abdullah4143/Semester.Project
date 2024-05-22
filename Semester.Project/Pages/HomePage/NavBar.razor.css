@@ -1,0 +1,53 @@
+﻿nav {
+    padding: 1.5rem;
+    height: 100px;
+}
+
+
+.nav-link {
+    color: black;
+}
+
+    .nav-link:hover {
+        color: darkgray; 
+    }
+
+.navbar-item {
+    padding: 1.75rem;
+    text-decoration : none;
+}
+    .navbar-item:hover {
+        padding: 1.75rem;
+        text-decoration:underline;
+    }
+
+    .navbar-item > a {
+        font-size: 1.2rem;
+        text-decoration: none;
+        color: black;
+    }
+
+.navbar-brand {
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: black;
+}
+
+    .navbar-brand:hover {
+        font-size: 1.6rem;
+        text-decoration: none;
+        color: black;
+    }
+
+.nav-left {
+    align-items: flex-start;
+}
+
+.nav-right {
+    align-items: flex-end;
+}
+
+.container-fluid {
+    background-image: linear-gradient(#abe2df,#4f95eb)
+}
+

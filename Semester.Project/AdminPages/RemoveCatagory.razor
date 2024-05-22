@@ -1,0 +1,53 @@
+﻿@inject CatagoriesService CatagoriesService
+@page "/admin/removecatagory"
+@layout AdminLayout
+
+<h3>RemoveCatagory</h3>
+
+<div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+        @foreach (var category in _catagories)
+        {
+            <div class="col mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@category.catagory_name</h5>
+                        <button class="btn btn-danger" @onclick="() => HandleRemove(category.catagory_id)">Remove</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .card {
+        margin-bottom: 20px;
+        padding:4px;
+    }
+</style>
+
+
+
+@code {
+    public List<Catagory> _catagories = new List<Catagory>();
+
+    protected override void OnInitialized()
+    {
+        _catagories = CatagoriesService.GetCatagories();
+    }
+
+    private void ReloadPage()
+    {
+        _catagories = CatagoriesService.GetCatagories();
+
+    }
+
+    private void HandleRemove(int n)
+    {
+        CatagoriesService.RemoveCatagory(n);
+        Console.WriteLine("Catagory Removed");
+        ReloadPage();
+    }
+
+}

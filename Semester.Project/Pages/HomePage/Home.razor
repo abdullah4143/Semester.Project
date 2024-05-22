@@ -1,0 +1,18 @@
+﻿@page "/Home/{email?}"
+@page "/Home"
+@page "/"
+@layout HomeLayout
+
+<NavBar isVisible="@isUserLoggedIn" email="@email"></NavBar>
+<Body email="@email" />
+
+<Subscribe />
+
+<FooterHome />
+
+@code {
+    [Parameter]
+    public string? email { get; set; } // The email parameter is optional
+
+    private bool isUserLoggedIn => !string.IsNullOrEmpty(email);
+}

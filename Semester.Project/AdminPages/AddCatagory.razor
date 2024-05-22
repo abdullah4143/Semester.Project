@@ -1,0 +1,29 @@
+﻿@inject CatagoriesService AdminService
+@page "/admin/addcatagory"
+@layout AdminLayout
+
+<EditForm Model="_catagory" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <InputText id="Name" class="form-control" @bind-Value="_catagory.catagory_name" />
+
+    </div>
+
+    <div class="form-group"> 
+        <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+
+</EditForm>
+
+
+@code {
+    private Catagory _catagory = new Catagory();
+    private void HandleValidSubmit()
+    {
+        AdminService.AddCatagory(_catagory.catagory_name);
+        _catagory = new Catagory();
+    }
+}

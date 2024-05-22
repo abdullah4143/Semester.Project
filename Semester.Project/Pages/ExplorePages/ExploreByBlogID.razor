@@ -1,0 +1,111 @@
+﻿@page "/explore/blogs/{blog_id:int}/{email?}"
+@inject BlogsService BlogsService
+@inject CommentService CommentService
+@inject UserService UserService
+@layout ProfileLayout
+
+<div class="container my-5 text-center" >
+    <div class="d-flex justify-content-center">
+    </div>
+    <h3 class="pt-2 text-center">ExploreByBlogID</h3>
+    
+    <div class="row w-100">
+        <div class="col-md-12 text-center">
+            <h1 class="pt-2">@blog.title</h1>
+            <hr>
+            <p class="pt-2 lead">@blog.content</p>
+            <p class="text-muted">@blog.publish_date</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col mx-5 text-center">
+                <h4 class="mt-5">Comments</h4>
+                <section>
+                    <div class="container my-5 py-5">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-8">
+                                <div class="card border-0">
+                                    <div class="card-body d-flex flex-column">
+                                        @foreach (var item in CommentService.GetBlogComments(blog_id))
+                                        {
+                                            <div class="d-flex justify-content-around align-items-center mb-3">
+                                                <div class="d-flex align-items-center justify-content-around">
+                                                    <img class="rounded-circle shadow-1-strong me-3"
+                                                         src="/user.jpg" alt="avatar" width="60" height="60" />
+                                                    <div>
+                                                        <h6 class="fw-bold text-primary mb-1">@UserService.GetUsernameById(item.user_id)</h6>
+                                                        <p class="text-muted small mb-0">
+                                                            Published on - @item.publish_date
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-3 mb-4 pb-2">
+                                                    @((MarkupString)Markdown.ToHtml(item.content))
+                                                 </div>
+                                            </div>
+                                        }
+
+                                        <div class="card-footer py-3 border-top">
+                                            <div class="d-flex flex-row">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    @if (email != null)
+    {
+        <div class="container px-5">
+            <div class="row">
+                <div class="col mx-5 text-center">
+                    <EditForm Model="_comment" OnValidSubmit="HandleComment">
+                        <label for="comment"></label>
+                        <InputTextArea id="comment" @bind-Value="_comment.content" class="form-control" />
+                        <br />
+                        <button class="btn btn-outline-success">Submit</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int blog_id { get; set; }
+
+    [Parameter]
+    public string? email { get; set; }
+
+    private bool _show = false;
+
+    private Comment _comment = new Comment();
+
+    private void HandleShow()
+    {
+        _show = !_show;
+    }
+    private void HandleComment()
+    {
+        _comment.publish_date = DateTime.Now.ToString();
+        _comment.blog_id = blog_id;
+        _comment.user_id = UserService.GetUseridByEmail(email);
+        CommentService.AddComment(_comment);
+        _show = !_show;
+    }
+
+    private Blog blog = new Blog();
+
+    protected override void OnInitialized()
+    {
+        blog = BlogsService.GetBlogById(blog_id);
+    }
+}

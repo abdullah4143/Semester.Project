@@ -1,0 +1,48 @@
+﻿@page "/profile/manage-blogs/{email}"
+@inject BlogsService BlogsService
+@inject NavigationManager NavigationManager
+@layout ProfileLayout
+
+
+<div class="container">
+    @foreach (var item in blogs)
+    {
+        <div class="card">
+            <div class="card-header">
+                <h3>@item.title</h3>
+            </div>
+            <div class="card-body">
+                <p>@item.content</p>
+                <p>@item.publish_date</p>
+                <button class="btn btn-outline-success" @onclick="()=>HandleEdit(item.blog_id)">Edit</button>
+                <button class="btn btn-outline-danger" @onclick="()=>HandleRemove(item.blog_id)">Remove</button>
+            </div>
+            
+        </div>
+    }
+</div>
+@code {
+    [Parameter]
+    public string email { get; set; }
+
+    private List<Blog> blogs = new List<Blog>();
+
+    protected override void OnInitialized()
+    {
+        blogs = BlogsService.GetUsersBlogs(email);
+    }
+     
+    private void HandleEdit(int blog_id)
+    {
+        NavigationManager.NavigateTo($"/profile/edit-blog/{email}/{blog_id}");
+    }
+    
+    private void HandleRemove(int blog_id)
+    {
+        BlogsService.deleteBlog(blog_id);
+        blogs = BlogsService.GetUsersBlogs(email);
+        Console.WriteLine("Blog Removed");
+
+    }
+
+}

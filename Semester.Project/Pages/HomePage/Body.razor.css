@@ -1,0 +1,42 @@
+﻿#title-image {
+    height: auto;
+}
+
+body{
+    background-image : url('../HomePage/Images/Transparent logo.png');
+}
+
+.top-right {
+    justify-items: center;
+    justify-content: center;
+}
+
+.top-left {
+    justify-items: center;
+}
+
+
+.top-container {
+    height: 100vh;
+    background-color: antiquewhite;
+    align-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.catagories {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1.5rem;
+    align-content: center;
+}
+
+.card {
+    margin: 1rem;
+}
+
+.show-more-btn {
+    display: flex;
+    justify-content: center;
+}

@@ -1,0 +1,74 @@
+﻿@page "/Login"
+@layout AuthLayout
+@inject NavigationManager NM
+@inject AuthServices AuthServices
+
+<div class="container my-5">
+    <div class="row">
+        <!-- Image column - visible on medium and larger screens -->
+        <div class="col-md-6 d-none d-md-block">
+            <img class="img-fluid" src="/login-image.jpg" />
+        </div>
+        <!-- Form column -->
+        <div class="col-md-6 col-sm-12">
+            <!-- Takes full width on small screens -->
+            <div class="container-fluid py-5 my-5">
+                <!-- Text "Login to continue" -->
+                <h2>Login to continue</h2>
+
+                <EditForm Model="_user" OnValidSubmit="HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="form-group">
+                        <label for="Email">Email</label>
+                        <InputText id="Email" class="form-control" @bind-Value="_user.Email" />
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label for="Password">Password</label>
+                        <InputText id="Password" type="password" class="form-control" @bind-Value="_user.password" />
+                    </div>
+                    <br />
+                    <!-- Center-aligned button -->
+                    <div class="form-group  text-center justify-content-around">
+                        <button type="submit" class="btn btn-primary mx-2">Login</button>
+                        <button type="button" class="btn btn-primary mx-2" @onclick="HandleRegister">Register</button>
+
+                    </div>
+
+                    <br />
+                    @if (_showerror)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            Invalid Email or Password
+                        </div>
+                    }
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private User _user = new User();
+    private bool _showerror = false;
+
+    private void HandleRegister()
+    {
+        NM.NavigateTo("/Register");
+    }
+
+    private void HandleValidSubmit()
+    {
+        var verified = AuthServices.VerifyUser(_user.Email, _user.password);
+        if (verified)
+        {
+            NM.NavigateTo($"/Home/{_user.Email}");
+        }
+        else
+        {
+            _showerror = true;
+        }
+    }
+}

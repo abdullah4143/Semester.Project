@@ -1,0 +1,34 @@
+﻿@page "/profile/{email}"
+@layout ProfileLayout
+@inject UserService UserService
+
+
+<div class="page">
+        
+    <div class="sidebar">
+        <NavMenu email="@email"></NavMenu>
+    </div>
+
+    <main>
+        <ProfileDetails _user="@_user"></ProfileDetails>
+
+    </main>
+
+    
+</div>
+
+@code {
+    [Parameter]
+    public string email { get; set; }
+
+    public User _user = new User();
+
+    private bool viewBlogs = false;
+
+    private bool manageBlogs = false;
+
+    protected override void OnInitialized()
+    {
+        _user = UserService.GetUserByEmail(email);
+    }
+}

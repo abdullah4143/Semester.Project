@@ -1,0 +1,81 @@
+﻿@inject UserService UserService
+@inject AdminService AdminService
+@page "/admin/removeuser"
+@layout AdminLayout
+
+<h3>RemoveUser</h3>
+
+<div class="container">
+    <table class="table">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Remove</th>
+            </tr>
+        @if (!Show)
+        {
+            @foreach (var item in _users)
+            {
+                <tr>
+
+                    <td>@item.user_id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@item.username</td>
+                    <td><button class="btn btn-outline-danger" type="button" @onclick="()=>HandleRemove(item.user_id)">X</button></td>
+                </tr>
+            }
+            <div class="container">
+                <button class="btn btn-primary" @onclick="ShowMore">Show More</button>
+            </div>
+        }
+        else
+        {
+            @foreach (var item in _users)
+            {
+                <tr>
+
+                    <td>@item.user_id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@item.username</td>
+                    <td><button class="btn btn-outline-danger" type="button" @onclick="()=>HandleRemove(item.user_id)">X</button></td>
+                </tr>
+            }
+            <div class="container">
+                <button class="btn btn-primary" @onclick="ShowLess">Show Less</button>
+            </div>
+            
+        }
+
+</table>
+</div>
+
+@code {
+    public List<User> _users = new List<User>();
+    public User _user = new User();
+    private bool Show { get; set; } = false;
+
+    private void ShowMore()
+    {
+        Show = true;
+    }
+    private void ShowLess()
+    {
+        Show = false;
+    }
+
+    protected override void OnInitialized()
+    {
+        _users = UserService.GetUsers();
+    }
+
+    private void HandleRemove(int i)
+    {
+        AdminService.deleteUser(i);
+        _users = UserService.GetUsers();
+
+    }
+}   

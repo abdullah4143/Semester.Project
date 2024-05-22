@@ -1,0 +1,82 @@
+﻿@page "/Register"
+@layout AuthLayout
+@inject NavigationManager NM
+@inject AuthServices AuthServices
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6 d-none d-md-block">
+            <img class="img-fluid" src="/login-image.jpg" />
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="container-fluid my-5">
+                <h2>Register as a user</h2>
+
+                <EditForm Model="_user" OnValidSubmit="HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div class="form-group">
+                        <label for="Name">Name</label>
+                        <InputText id="Name" class="form-control" @bind-Value="_user.Name" />
+                    </div>
+
+                    <br />
+                    <div class="form-group">
+                        <label for="Username">Username</label>
+                        <InputText id="Username" class="form-control" @bind-Value="_user.username" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Email">Email</label>
+                        <InputText id="Email" class="form-control" @bind-Value="_user.Email" />
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label for="Password">Password</label>
+                        <InputText id="Password" type="password" class="form-control" @bind-Value="_user.password" />
+                    </div>
+                    <br />
+                    <!-- Center-aligned button -->
+                    <div class="form-group  text-center justify-content-around">
+                        <button type="submit" class="btn btn-outline-success mx-2">Register</button>
+
+                    </div>
+
+                    <br />
+                    @if (_showerror)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            Email already exists
+                        </div>
+                    }
+                </EditForm>
+                @if (sumbitted)
+                {
+                    <p class="alert-success">user registered succesfully
+                        <a href="/Login">Move back to Login Page</a>
+                        </p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private User _user = new User();
+    private bool _showerror = false;
+    private bool sumbitted = false;
+
+    private void HandleValidSubmit()
+    {
+        var verified = AuthServices.AddUser(_user);
+        if (verified)
+        {
+            sumbitted = true;
+        }
+        else
+        {
+            _showerror = true;
+        }
+    }
+}

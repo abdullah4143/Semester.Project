@@ -1,0 +1,62 @@
+﻿@inject UserService UserService
+
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-md bg-opacity-50">
+        <a class="navbar-brand h1" href="#">AUCIS Student Clubs</a>
+
+        <button class="btn btn-outline-success navbar-toggler" type="button" @onclick="ToggleNavMenu">
+            <span class="oi oi-menu"></span>
+        </button>
+        <div class="@NavMenuCssClass" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                
+                @if (!isVisible)
+                {
+                    <li class="nav-item">
+                        <NavLink class="nav-link px-4" href="/Login">
+                            <span class="oi oi-account-login px-2 text-black">Login</span>
+                        </NavLink>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <NavLink class="nav-link px-3" href="@($"/profile/{email}")" Match="NavLinkMatch.All">
+                            <span class="oi oi-person">Hello, @UserName!</span>
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="@($"/create-blog/{email}")" Match="NavLinkMatch.All">
+                            <span class="oi oi-plus" aria-hidden="true"></span> Create Blog
+                        </NavLink>
+                    </li>
+                }
+            </ul>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+    [Parameter]
+    public bool isVisible { get; set; }
+    [Parameter]
+    public string? email { get; set; }
+
+    public string? UserName { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(email))
+        {
+            UserName = UserService.GetUsernameByEmail(email);
+        }
+    }
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse navbar-collapse" : "navbar-collapse";
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
