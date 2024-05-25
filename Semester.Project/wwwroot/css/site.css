@@ -1,5 +1,30 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+@font-face{
+    font-family: 'Dancing';
+    src: url('../fonts/DancingScript-VariableFont_wght.ttf');
+  
+}
+@font-face {
+    font-family: 'font2';
+    src: url('../fonts/Pacifico-Regular.ttf');
+}
+@font-face {
+    font-family: 'font3';
+    src: url('../fonts/AkayaTelivigala-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'font4';
+    src: url('../fonts/Cinzel-VariableFont_wght.ttf');
+}
+
+@font-face {
+    font-family: 'font5';
+    src: url('../fonts/Akronim-Regular.ttf');
+}
+
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }

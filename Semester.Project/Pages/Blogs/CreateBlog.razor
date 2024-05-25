@@ -1,78 +1,84 @@
-﻿@page "/create-blog/{email}"
+﻿@page "/create-blog/{username?}"
 @inject CatagoriesService CatagoriesService
 @inject UserService UserService
 @inject BlogsService BlogsService
+@inject NavigationManager NavigationManager
 @layout ProfileLayout
 
 
-<style>
-        #contentPreview {
-        border: 1px solid #ccc;
-        padding: 10px;
-        height: 200px;
-        overflow-y: scroll;
-    }
-</style>
-
-<h3>Create a new Blog</h3>
 
 
-<EditForm Model="_blog" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label for="Name">Title</label>
-        <InputText @bind-Value="_blog.title" id="Name" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label for="content">Content</label>
-        <InputTextArea @bind-Value="_blog.content" id="content" placeholder class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label for="contentPreview">Content Preview</label>
-        <div id="contentPreview" class="form-control">@((MarkupString)Markdown.ToHtml(_blog.content))</div>
-    </div>
-
-    <div class="form-group">
-        <label for="role">Catagory</label>
-        <InputSelect Id="role" class="form-control" @bind-Value="_blog.catagory_id">
-            @foreach(var item in catagories)
-            {
-                <option value="@item.catagory_id">@item.catagory_name</option>
-            }
-        </InputSelect>
-    </div>
-
-    <div class="form-group">
-        <button class="btn btn-outline-success" type="submit">Commit</button>
-    </div>
-
-</EditForm>
-
-@if(submitted != null)
+@if (username == null)
 {
-    if(submitted == true)
-    {
-        <div class="alert alert-success" role="alert">
-            Blog created successfully
-        </div>
-    }
-    else
-    {
-        <div class="alert alert-danger" role="alert">
-            Some Error Occured
-        </div>
-    }
+    <div class="container text-center py-5 my-5">
+        <h2>You're not logged in</h2>
+        <p>Kindly Login to Gain Access</p>
+        <button class="btn btn-outline-primary" @onclick="HandleLogin">Login</button>
+    </div>
+}
+else
+{
+
+    <NavMenu username="username"></NavMenu>
+
+    <div class="container mt-5">
+        <h3 class="font1 text-center">Create a new Blog</h3>
+
+        <EditForm Model="_blog" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="Name" class="font-monospace">Title</label>
+                <InputText @bind-Value="_blog.title" id="Name" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label for="content" class="font-monospace">Content</label>
+                <InputTextArea @bind-Value="_blog.content" id="content" placeholder class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label for="contentPreview" class="font-monospace">Content Preview</label>
+                <div id="contentPreview" class="form-control">@((MarkupString)Markdown.ToHtml(_blog.content))</div>
+            </div>
+
+            <div class="form-group">
+                <label for="role" class="font-monospace">Category</label>
+                <InputSelect Id="role" class="form-control" @bind-Value="_blog.catagory_id">
+                    @foreach (var item in catagories)
+                    {
+                        <option value="@item.catagory_id">@item.catagory_name</option>
+                    }
+                </InputSelect>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-outline-success" type="submit">Submit</button>
+            </div>
+        </EditForm>
+
+        @if (submitted != null)
+        {
+            if (submitted == true)
+            {
+                <div class="alert alert-success" role="alert">
+                    Blog created successfully
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger" role="alert">
+                    Some Error Occurred
+                </div>
+            }
+        }
+    </div>
 }
 
 @code {
     [Parameter]
-    public string email { get; set; }
-
-
+    public string? username { get; set; }
 
     public string catagory { get; set; }
     private bool? submitted = null;
@@ -80,20 +86,26 @@
     private List<Catagory> catagories = new List<Catagory>();
     private int user_id { get; set; }
 
-
-
     protected override void OnInitialized()
     {
-        user_id = UserService.GetUseridByEmail(email);
-        catagories  = CatagoriesService.GetCatagories();
+        if (username != null)
+        {
+            user_id = UserService.GetUseridByUsername(username);
+            catagories = CatagoriesService.GetCatagories();
+        }
     }
 
     private void HandleValidSubmit()
     {
         _blog.publish_date = DateTime.Now.ToString("F");
-        submitted = BlogsService.CreateBlog(_blog,user_id);
+        submitted = BlogsService.CreateBlog(_blog, user_id);
         _blog = new Blog();
+        NavigationManager.NavigateTo($"/Home/{username}");
+
     }
 
-
+    private void HandleLogin()
+    {
+        NavigationManager.NavigateTo("/Login");
+    }
 }

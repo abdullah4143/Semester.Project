@@ -1,0 +1,10 @@
+﻿@font-face{
+    font-family: 'font1';
+    src: url('/wwwroot/fonts/Pacifico-Regular.ttf');
+}
+
+
+.font1 {
+    font-family: 'font1';
+    font-size: 40px;
+}

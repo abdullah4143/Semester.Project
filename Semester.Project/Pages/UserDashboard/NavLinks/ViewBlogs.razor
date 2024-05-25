@@ -1,31 +1,64 @@
-﻿@page "/profile/view-blogs/{email}"
+﻿@page "/profile/view-blogs/{username}"
 @inject BlogsService BlogsService
+@inject UserService UserService
+@inject NavigationManager NavigationManager
 @layout ProfileLayout
 
+<NavMenu username="@username"></NavMenu>
 
-<div class="container">
-    @foreach(var item in blogs)
-    {
-        <div class="card">
-            <div class="card-header">
-                <h3>@item.title</h3>
-            </div>
-            <div class="card-body">
-                <p>@item.content</p>
-                <p>@item.publish_date</p>
-            </div>
+
+<div class="container p-5">
+    <!-- Welcome Message -->
+    <div class="row mb-4">
+        <div class="col">
+            <h2>Welcome, @_user.Name!</h2>
+            <p>Here are your latest blogs:</p>
         </div>
-    }
-</div>
+    </div>
+
+    <!-- Blog Cards -->
+    <div class="row">
+        @foreach (var item in blogs)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.title</h5>
+                        <p class="card-text">@item.content.Substring(0, Math.Min(item.content.Length, 100))...</p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-outline-info btn-sm mr-2" @onclick="() => ViewBlog(item.blog_id)">View Blog</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+    </div>
 @code {
     [Parameter]
-    public string email { get; set; }
+    public string username { get; set; }
 
     private List<Blog> blogs = new List<Blog>();
+    private User _user = new User();
+    private int currentPage = 1;
+    private int pageSize = 6;
+    private int totalPages;
 
     protected override void OnInitialized()
     {
-        blogs = BlogsService.GetUsersBlogs(email);
+        _user = UserService.GetUserByUsername(username);
+        blogs = BlogsService.GetUsersBlogs(username);
     }
 
+
+
+    private void ViewBlog(int blogId)
+    {
+        NavigationManager.NavigateTo($"/explore/blogs/{blogId}/{username}");
+
+    }
+
+    
 }

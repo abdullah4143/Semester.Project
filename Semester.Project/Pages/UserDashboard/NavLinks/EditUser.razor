@@ -1,60 +1,58 @@
-﻿@page "/profile/edit-user/{email}"
+﻿@page "/profile/edit-user/{username}"
 @inject UserService UserService
 @layout ProfileLayout
 
-<div class="m-5">
+<NavMenu username="@username"></NavMenu>
 
-<EditForm Model="_user" OnValidSubmit="HandleValidSubmit">
-    <div class="form-group">
-        <label for="Name">Name</label>
-        <InputText @bind-Value="_user.Name" id="Name" class="form-control" />
-    </div>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Edit User Details</h1>
 
-    <div class="form-group">
-        <label for="Username">Username</label>
-        <InputText @bind-Value="_user.username" id="Username" placeholder class="form-control" />
-    </div>
+    <EditForm Model="_user" OnValidSubmit="HandleValidSubmit">
+        <div class="form-group">
+            <label for="Name" class="font-monospace">Name</label>
+            <InputText @bind-Value="_user.Name" id="Name" class="form-control" />
+        </div>
 
+        <div class="form-group">
+            <label for="Username" class="font-monospace">Username</label>
+            <InputText @bind-Value="_user.username" id="Username" class="form-control" />
+        </div>
 
-    <div class="form-group">
-        <label for="Email">Email</label>
-        <InputText @bind-Value="_user.Email" id="Email" class="form-control" />
-    </div>
+        <div class="form-group">
+            <label for="Email" class="font-monospace">Email</label>
+            <InputText @bind-Value="_user.Email" id="Email" class="form-control" />
+        </div>
 
+        <div class="form-group">
+            <label for="Password">Password</label>
+            <InputText @bind-Value="_user.password" type="password" id="Password" class="form-control" />
+        </div>
 
-    <div class="form-group">
-        <label for="Password">Password</label>
-        <InputText @bind-Value="_user.password" id="Password" class="form-control" />
-    </div>
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-outline-success">Update Details</button>
+        </div>
+    </EditForm>
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-outline-success">Update Details</button> 
-    </div>
-</EditForm>
-
-@if (updated != null)
-{
-    if (updated == true)
+    @if (updated != null)
     {
-        <div class="alert alert-success" role="alert">
-            User details updated successfully
+        <div class="alert @((updated == true) ? "alert-success" : "alert-danger")" role="alert">
+            @if (updated == true)
+            {
+                <p>User details updated successfully</p>
+           }
+            else
+            {
+                <p>User details not updated; one or more details might already have been taken.</p>
+            }
         </div>
     }
-    else
-    {
-        <div class="alert alert-danger" role="alert">
-            User details not updated one or more details might already been taken
-        </div>
-    }
-}
-
 </div>
 
 @code {
     [Parameter]
-    public string email { get; set; }
+    public string username { get; set; }
 
-    private bool ?updated { get; set; } =  null;
+    private bool? updated { get; set; } = null;
 
     private User _user = new User();
 
@@ -63,9 +61,8 @@
         updated = UserService.UpdateUser(_user);
     }
 
-
     protected override void OnInitialized()
     {
-        _user = UserService.GetUserByEmail(email);
+        _user = UserService.GetUserByUsername(username);
     }
 }

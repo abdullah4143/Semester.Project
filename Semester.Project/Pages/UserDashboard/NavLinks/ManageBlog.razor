@@ -1,0 +1,106 @@
+﻿@page "/profile/manage-blog/{blogId}"
+@inject BlogsService BlogsService
+@inject CatagoriesService CategoriesService
+@inject NavigationManager NavigationManager
+@layout ProfileLayout
+
+
+
+<div class="container">
+    <h2>Manage Blog</h2>
+
+    @if (blog != null)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">@blog.title</h5>
+                <p class="card-text">@blog.content</p>
+                <button class="btn btn-sm btn-outline-primary mr-2" @onclick="ToggleEditBlock">Edit</button>
+                <button class="btn btn-sm btn-outline-danger" @onclick="RemoveBlog">Remove</button>
+            </div>
+        </div>
+
+        <!-- Edit Block -->
+        @if (showEditBlock)
+        {
+            <div class="card">
+                <div class="card-body">
+                    <h5>Edit Blog</h5>
+                    <div class="form-group">
+                        <label for="editTitle">Title:</label>
+                        <input type="text" class="form-control" id="editTitle" @bind="editTitle">
+                    </div>
+                    <div class="form-group">
+                        <label for="editContent">Content:</label>
+                        <textarea class="form-control" id="editContent" rows="5" @bind="editContent"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCategory">Category:</label>
+                        <select class="form-control" id="editCategory" @bind="editCategoryId">
+                            @foreach (var category in categories)
+                            {
+                                <option value="@category.catagory_id">@category.catagory_name</option>
+                            }
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" @onclick="SaveChanges">Save Changes</button>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Blog not found.</p>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int blogId { get; set; }
+
+    private Blog blog;
+    private bool showEditBlock = false;
+    private string editTitle;
+    private string editContent;
+    private int editCategoryId;
+    private List<Catagory> categories = new List<Catagory>();
+
+    protected override void OnInitialized()
+    {
+        // Load the blog with the specified ID
+        blog = BlogsService.GetBlogById(blogId);
+
+        // Initialize edit fields with current values
+        editTitle = blog.title;
+        editContent = blog.content;
+        editCategoryId = blog.catagory_id;
+
+        // Load categories
+        categories = CategoriesService.GetCatagories();
+    }
+
+    private void ToggleEditBlock()
+    {
+        showEditBlock = !showEditBlock;
+    }
+
+    private void SaveChanges()
+    {
+        blog.title = editTitle;
+        blog.content = editContent;
+        blog.catagory_id = editCategoryId;
+
+        BlogsService.UpdateBlog(blog);
+
+        showEditBlock = false;
+    }
+
+    private void RemoveBlog()
+    {
+        // Call the service to remove the blog
+        BlogsService.deleteBlog(blogId);
+
+        // Navigate back to the manage blogs page
+        NavigationManager.NavigateTo("/profile/manage-blogs");
+    }
+}

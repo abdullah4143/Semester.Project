@@ -1,48 +1,76 @@
-﻿@page "/profile/manage-blogs/{email}"
+﻿@page "/profile/manage-blogs/{username}"
 @inject BlogsService BlogsService
 @inject NavigationManager NavigationManager
 @layout ProfileLayout
 
+<NavMenu username="@username"></NavMenu>
 
-<div class="container">
-    @foreach (var item in blogs)
+<div class="container p-5 manage-blogs-container">
+    <h3 class="page-title text-center mb-4 ">Manage Your Blogs</h3>
+
+    @if (blogs == null || !blogs.Any())
     {
-        <div class="card">
-            <div class="card-header">
-                <h3>@item.title</h3>
-            </div>
-            <div class="card-body">
-                <p>@item.content</p>
-                <p>@item.publish_date</p>
-                <button class="btn btn-outline-success" @onclick="()=>HandleEdit(item.blog_id)">Edit</button>
-                <button class="btn btn-outline-danger" @onclick="()=>HandleRemove(item.blog_id)">Remove</button>
-            </div>
-            
+        <p class="no-blogs-message">No Blogs Found</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var item in blogs)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h3 class="card-title">@item.title</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">@TruncateContent(item.content, 50)</p>  
+                            <p class="text-muted">@item.publish_date</p>
+                            <div class="btn-group">
+                                <button class="btn btn-outline-success" @onclick="()=>HandleEdit(item.blog_id)">Edit</button>
+                                <button class="btn btn-outline-danger" @onclick="()=>HandleRemove(item.blog_id)">Remove</button>
+                                <button class="btn btn-outline-primary" @onclick="()=>HandleComments(item.blog_id)">Comments</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     }
 </div>
+
 @code {
     [Parameter]
-    public string email { get; set; }
+    public string username { get; set; }
 
     private List<Blog> blogs = new List<Blog>();
 
     protected override void OnInitialized()
     {
-        blogs = BlogsService.GetUsersBlogs(email);
+        blogs = BlogsService.GetUsersBlogs(username);
     }
-     
+
     private void HandleEdit(int blog_id)
     {
-        NavigationManager.NavigateTo($"/profile/edit-blog/{email}/{blog_id}");
+        NavigationManager.NavigateTo($"/profile/edit-blog/{username}/{blog_id}");
     }
-    
+
     private void HandleRemove(int blog_id)
     {
         BlogsService.deleteBlog(blog_id);
-        blogs = BlogsService.GetUsersBlogs(email);
+        blogs = BlogsService.GetUsersBlogs(username);
         Console.WriteLine("Blog Removed");
-
     }
 
+    private void HandleComments(int blog_id)
+    {
+        NavigationManager.NavigateTo($"/profile/manage-comments/{username}/{blog_id}");
+    }
+    private string TruncateContent(string content, int maxLength)
+    {
+        if (string.IsNullOrEmpty(content))
+        {
+            return content;
+        }
+        return content.Length <= maxLength ? content : content.Substring(0, maxLength) + "...";
+    }
 }

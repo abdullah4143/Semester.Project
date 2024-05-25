@@ -1,0 +1,53 @@
+﻿
+
+
+.font1{
+    font-family: 'font2';
+}
+
+.font2{
+    font-family:'Cascadia Mono';
+    font-size:30px;
+}
+/* Profile Card */
+.card-profile {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .card-profile .card-body {
+        padding: 2rem;
+    }
+
+    .card-profile img {
+        border-radius: 50%;
+    }
+
+/* User Details */
+.card-user-details {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .card-user-details .card-header {
+        background-color: #872d1b;
+        color: #fff;
+        padding: 1rem;
+    }
+
+    .card-user-details .card-body {
+        padding: 2rem;
+    }
+
+    .card-user-details .row {
+        margin-bottom: 1rem;
+    }
+
+    .card-user-details .col-sm-3 {
+        font-weight: bold;
+    }
+
+    .card-user-details p {
+        margin-bottom: 0;
+    }
+

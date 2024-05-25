@@ -40,12 +40,13 @@ namespace DataAccessLayer
             SqlCommand cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@Email", email);
             conn.Open();
-            string username = cmd.ExecuteScalar().ToString()!;
+            string result = (string)cmd.ExecuteScalar();
             conn.Close();
 
-            return username;
+            return result;
         }
 
+        
         public string GetUsernameById(int id)
         {
             SqlConnection conn = DbConnectionString.GetConnection();
@@ -81,6 +82,29 @@ namespace DataAccessLayer
             return user;
         }
 
+        public User GetUserByUsername(string username)
+        {
+            SqlConnection conn = DbConnectionString.GetConnection();
+            string query = "SELECT * FROM users WHERE username = @username";
+            SqlCommand cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@username", username);
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            User user = new User();
+            while (reader.Read())
+            {
+                user.user_id = Convert.ToInt32(reader["user_id"]);
+                user.username = reader["username"].ToString();
+                user.Email = reader["Email"].ToString();
+                user.password = reader["password"].ToString();
+                user.Name = reader["Name"].ToString();
+            }
+            conn.Close();
+
+            return user;
+        }
+
+
         public bool UpdateUser(User u)
         {
             using (SqlConnection conn = DbConnectionString.GetConnection())
@@ -114,12 +138,12 @@ namespace DataAccessLayer
             }
         }
 
-        public int GetUseridByEmail(string email)
+        public int GetUseridByUsername(string username)
         {
             SqlConnection conn = DbConnectionString.GetConnection();
-            string query = "SELECT user_id FROM users WHERE Email = @Email";
+            string query = "SELECT user_id FROM users WHERE username = @username";
             SqlCommand cmd = new SqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@Email", email);
+            cmd.Parameters.AddWithValue("@username", username);
             conn.Open();
             int user_id = Convert.ToInt32(cmd.ExecuteScalar());
             conn.Close();

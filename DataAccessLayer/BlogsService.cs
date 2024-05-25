@@ -10,6 +10,7 @@ namespace DataAccessLayer
 {
     public class BlogsService
     {
+        
         public List<Blog> GetBlogs()
         {
             SqlConnection conn = DbConnectionString.GetConnection();
@@ -49,7 +50,6 @@ namespace DataAccessLayer
             cmd1.ExecuteNonQuery();
             conn.Close();
         }
-
         public bool CreateBlog(Blog blog, int userId)
         {
             SqlConnection conn = DbConnectionString.GetConnection();
@@ -67,12 +67,12 @@ namespace DataAccessLayer
 
             return true;
         }
-       public List<Blog> GetUsersBlogs(string email)
+       public List<Blog> GetUsersBlogs(string username)
         {
             SqlConnection conn = DbConnectionString.GetConnection();
-            string query = "SELECT * FROM blogs WHERE user_id IN (SELECT user_id FROM users WHERE email = @email)";
+            string query = "SELECT * FROM blogs WHERE user_id IN (SELECT user_id FROM users WHERE username = @username)";
             SqlCommand cmd = new SqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@email", email);
+            cmd.Parameters.AddWithValue("@username", username);
             conn.Open();
             SqlDataReader reader = cmd.ExecuteReader();
             List<Blog> blogs = new List<Blog>();
@@ -89,7 +89,6 @@ namespace DataAccessLayer
             }
             return blogs;
         }
-
         public Blog GetBlogById(int id)
         {
             SqlConnection conn = DbConnectionString.GetConnection();
@@ -112,7 +111,6 @@ namespace DataAccessLayer
 
             return blog;
         }
-
         public List<Blog> GetBlogByCat(int id)
         {
             SqlConnection conn = DbConnectionString.GetConnection();
@@ -136,8 +134,6 @@ namespace DataAccessLayer
 
             return blogs;
         }
-
-
         public List<Blog> GetRecentBlogs()
         {
             SqlConnection conn = DbConnectionString.GetConnection();
@@ -161,7 +157,31 @@ namespace DataAccessLayer
 
             return blogs;
         }
+        public void UpdateBlog(Blog blog)
+        {
+            SqlConnection conn = DbConnectionString.GetConnection();
+            string query = "UPDATE blogs SET catagory_id = @catagory_id, title = @title, content = @content WHERE blog_id = @blog_id";
+            SqlCommand cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@catagory_id", blog.catagory_id);
+            cmd.Parameters.AddWithValue("@title", blog.title);
+            cmd.Parameters.AddWithValue("@content", blog.content);
+            cmd.Parameters.AddWithValue("@blog_id", blog.blog_id);
+            conn.Open();
+            cmd.ExecuteNonQuery();
+            conn.Close();
 
+        }
+        public int GetUsersNumberofBlogs(string username)
+        {
+            SqlConnection conn = DbConnectionString.GetConnection();
+            string query = "SELECT COUNT(blog_id) FROM blogs WHERE user_id IN (SELECT user_id FROM users WHERE username = @username)";
+            SqlCommand cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@username", username);
+            conn.Open();
+            int result = (int)cmd.ExecuteScalar();
+            conn.Close();
+            return result;
+        }
     }
 
 }

@@ -90,9 +90,6 @@ namespace DataAccessLayer
                 return true;
             }
         }
-
-
-
         public int GetUseridByEmail(string email)
         {
             SqlConnection conn = DbConnectionString.GetConnection();

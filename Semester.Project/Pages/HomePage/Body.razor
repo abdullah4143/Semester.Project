@@ -1,83 +1,124 @@
-﻿@inject BlogsService BlogService
+﻿
+@inject BlogsService BlogService
 @inject CatagoriesService CatagoriesService
 @inject NavigationManager NavigationManager
 
-<!-- Logo + Text -->
-
-<div class="container">
-    <div class="row">
+<div class="container my-5 outer">
+    <!-- Logo + Text -->
+    <div class="row mb-5 align-items-center text-center">
         <div class="col-sm-6 order-sm-2">
-            <img src="/Transparent logo.png" class="img-fluid" alt="Image">
+            <img src="/images/bww.jpg" class="img-fluid" alt="Logo">
         </div>
-        <div class="col-sm-6 order-sm-1 d-flex justify-content-center align-items-center" style="padding: 1.5rem;">
-            <h2 class="text-center">The Writer's Club</h2>
-            <p class="text-center"></p>
-
+        <div class="col-sm-6 order-sm-1 d-flex flex-column justify-content-center align-items-center">
+            <h2 class="text-center mb-3 Dancing1">The Writer's Club</h2>
+            <p class="text-center font4">A place to share and explore amazing stories.</p>
         </div>
     </div>
-</div>
 
-<hr />
+    <hr />
 
-<!-- Catagories Card -->
+    <!-- Categories Card -->
+    <section class="categories-section mb-5 text-center Dancing container-fluid pt-3 mt-3">
+        <h2 class="mb-4 font5">Categories</h2>
+        <div class="row ">
+            @foreach (var category in _catagories.Take(VisibleCount))
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="card h-100">
+                        <img src="@getImgUrl(category.catagory_id)" class="card-img-top" alt="Category Image">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                            <h5 class="card-title bg-info Dancing">@category.catagory_name</h5>
+                            <button class="btn btn-outline-info p-1 font2 mt-3" @onclick="() => HandleExplore1(category.catagory_id)">Explore</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
 
+        <div class="d-flex justify-content-center mb-5">
+            @if (VisibleCount < _catagories.Count)
+            {
+                <button class="btn btn-outline-primary mx-3 p-2 font2" @onclick="ShowMore">Show More</button>
+            }
 
-<div class="container">
-    <div class="row">
-        @foreach (var category in _catagories.Take(VisibleCount))
-        {
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-        <div class="card" >
-                    <div class="card-body">
-                        <h5 class="card-title">@category.catagory_name</h5>
-                        <button class="btn btn-outline-info" @onclick="()=>HandleExplore1(category.catagory_id)">Explore</button>
+            @if (VisibleCount > 4)
+            {
+                <button class="btn btn-outline-secondary mx-3 p-2 font2" @onclick="ShowLess">Show Less</button>
+            }
+        </div>
+    </section>
+
+    <hr />
+
+    <!-- Blogs Display -->
+    <section class="blogs-section mb-5 text-center mt-3 pt-3">
+        <h2 class="mb-4 font5">Featured Blogs</h2>
+        <div class="row">
+            @foreach (var item in _blogs.Take(3)) // Show only 3 featured blogs
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="card-title bg-dark font2 h-75">@item.title</h3>
+                        </div>
+                        <div class="card-body font-monospace">
+                            <p>@(item.content.Length > 100 ? item.content.Substring(0, 50) + "..." : item.content)</p>
+                            <p class="text-muted">@item.publish_date</p>
+                            <button class="btn font2 p-1 m-1 btn-outline-dark" @onclick="() => HandleExplore(item.blog_id)">Read More</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+
+    <hr />
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section mb-5 text-center">
+        <h2 class="mb-4 font5 mt-3 pt-3">What Our Readers Say</h2>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <p class="card-text font-monospace">"This is the best place to share my stories and get feedback!"</p>
+                        <footer class="blockquote-footer bg-info Dancing">John Doe</footer>
                     </div>
                 </div>
             </div>
-        }
-    </div>
-    <div class="d-flex justify-content-center " >
-        @if (VisibleCount < _catagories.Count)
-        {
-            <div class="btn btn-outline mx-3" @onclick="ShowMore">Show More</div>
-        }
-
-        @if (VisibleCount > 4)
-        {
-            <div class="btn btn-outline mx-3" @onclick="ShowLess">Show Less</div>
-
-        }
-    </div>
-    
-</div>
-<hr />
-
-<!-- Blogs Display -->
-
-<div class="container">
-
-    @foreach(var item in _blogs)
-    {
-        <div class="card mb-3">
-            <div class="card-header">
-                <h3>@item.title</h3>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <p class="card-text font-monospace">"I love reading the diverse content available here."</p>
+                        <footer class="blockquote-footer bg-info Dancing">Jane Smith</footer>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <p>@(item.content.Length > 20 ? item.content.Substring(0, 20) + "..." : item.content)</p>
-                <p>@item.publish_date</p
-                <button class="btn btn-outline-dark" @onclick="()=>HandleExplore(item.blog_id)">Explore</button>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <p class="card-text font-monospace">"A fantastic community for writers of all levels."</p>
+                        <footer class="blockquote-footer bg-info Dancing">Alex Brown</footer>
+                    </div>
+                </div>
             </div>
         </div>
-    }
+    </section>
 
+    <!-- Call to Action -->
+    <section class="bg-dark text-white text-center py-5">
+        <h2 class="mb-3">Ready to Share Your Story?</h2>
+        <p>Join our community and start writing today!</p>
+        <a href="/create-blog" class="btn btn-outline-info btn-lg p-1 mt-2">Get Writing</a>
+    </section>
 </div>
 
-@code{
+@code {
     private List<Catagory> _catagories = new List<Catagory>();
     private List<Blog> _blogs = new List<Blog>();
 
     [Parameter]
-    public string? email { get; set; }
+    public string? username { get; set; }
 
     // initial visible count
     private int VisibleCount = 4;
@@ -96,12 +137,12 @@
 
     private void HandleExplore(int blog_id)
     {
-        NavigationManager.NavigateTo($"/explore/blogs/{blog_id}/{email}");
+        NavigationManager.NavigateTo($"/explore/blogs/{blog_id}/{username}");
     }
 
     private void HandleExplore1(int catagory_id)
     {
-        NavigationManager.NavigateTo($"/explore/category/{catagory_id}/{email}");
+        NavigationManager.NavigateTo($"/explore/category/{catagory_id}/{username}");
     }
 
     protected override void OnInitialized()
@@ -110,4 +151,15 @@
         _blogs = BlogService.GetRecentBlogs();
     }
 
+    private string getImgUrl(int id)
+    {
+        if(id%2 == 0)
+        {
+            return "../images/doodle3.jpg";
+        }
+        else
+        {
+            return "../images/doodle2.jpg";
+        }
+    }
 }

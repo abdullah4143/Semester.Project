@@ -1,6 +1,7 @@
 ﻿@page "/Login"
 @layout AuthLayout
 @inject NavigationManager NM
+@inject UserService UserService
 @inject AuthServices AuthServices
 
 <div class="container my-5">
@@ -10,9 +11,9 @@
             <img class="img-fluid" src="/login-image.jpg" />
         </div>
         <!-- Form column -->
-        <div class="col-md-6 col-sm-12">
+        <div class="col-md-6 col-sm-12 ">
             <!-- Takes full width on small screens -->
-            <div class="container-fluid py-5 my-5">
+            <div class="container-fluid py-5 my-5 login-container">
                 <!-- Text "Login to continue" -->
                 <h2>Login to continue</h2>
 
@@ -64,7 +65,8 @@
         var verified = AuthServices.VerifyUser(_user.Email, _user.password);
         if (verified)
         {
-            NM.NavigateTo($"/Home/{_user.Email}");
+            string username = UserService.GetUsernameByEmail(_user.Email);
+            NM.NavigateTo($"/Home/{username}");
         }
         else
         {

@@ -44,5 +44,15 @@ namespace DataAccessLayer
             conn.Open();
             cmd.ExecuteNonQuery();
         }
+
+        public void DeleteComment(int comment_id)
+        {
+            SqlConnection conn = DbConnectionString.GetConnection();
+            string query = "delete from comments where comment_id = @comment_id";
+            SqlCommand cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@comment_id", comment_id);
+            conn.Open();
+            cmd.ExecuteNonQuery();
+        }
     }
 }

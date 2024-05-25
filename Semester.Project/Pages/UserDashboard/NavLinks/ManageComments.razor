@@ -1,0 +1,46 @@
+﻿@page "/profile/manage-comments/{username}/{blog_id:int}"
+@inject CommentService CommentService
+@layout ProfileLayout
+
+
+<NavMenu username="@username"></NavMenu>
+
+
+<div class="container p-5">
+    @foreach (var item in comments)
+    {
+        <div class="card">
+            <div class="card-header">
+                <h3>@item.content</h3>
+            </div>
+            <div class="card-body">
+                <p>@item.publish_date</p>
+                <button class="btn btn-outline-danger" @onclick="()=>HandleRemove(item.comment_id)">Remove</button>
+            </div>
+        </div>
+    }
+
+</div>
+
+
+
+@code {
+    [Parameter]
+    public string username { get; set; }
+    [Parameter]
+    public int blog_id { get; set; }
+
+    private List<Comment> comments = new List<Comment>();
+
+    protected override void OnInitialized()
+    {
+        comments = CommentService.GetBlogComments(blog_id);
+    }
+
+    private void HandleRemove(int comment_id)
+    {
+        CommentService.DeleteComment(comment_id);
+        comments = CommentService.GetBlogComments(blog_id);
+        Console.WriteLine("Comment Removed");
+    }
+}

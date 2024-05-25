@@ -1,0 +1,40 @@
+﻿.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+h3 {
+    color: #333;
+}
+
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+.card-header {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.card-body {
+    color: #555;
+}
+
+.card-footer {
+    background-color: #f8f9fa;
+}
+
+.btn-outline-dark {
+    border-color: #333;
+    color: #333;
+}
+
+    .btn-outline-dark:hover {
+        background-color: #333;
+        color: #fff;
+    }

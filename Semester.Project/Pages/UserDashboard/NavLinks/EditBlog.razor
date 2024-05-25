@@ -1,0 +1,63 @@
+﻿@page "/profile/edit-blog/{username}/{blog_id:int}"
+@inject BlogsService BlogsService
+@inject CatagoriesService CatagoriesService
+@inject NavigationManager NavigationManager
+@layout ProfileLayout
+
+<NavMenu username="@username"></NavMenu>
+
+<div class="container py-5 edit-blog-container mt-5">
+    <h1 class="text-center mb-4">Edit Blog</h1>
+
+    <EditForm Model="blog" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label for="title">Title</label>
+            <InputText id="title" class="form-control" @bind-Value="blog.title" />
+        </div>
+
+        <div class="form-group">
+            <label for="content">Content</label>
+            <InputTextArea id="content" class="form-control" @bind-Value="blog.content" />
+        </div>
+
+        <div class="form-group">
+            <label for="role">Category</label>
+            <InputSelect Id="role" class="form-control" @bind-Value="blog.catagory_id">
+                @foreach (var item in catagories)
+                {
+                    <option value="@item.catagory_id">@item.catagory_name</option>
+                }
+            </InputSelect>
+        </div>
+
+        <div class="form-group text-center">
+            <button class="btn btn-outline-success" type="submit">Commit</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public string username { get; set; }
+
+    [Parameter]
+    public int blog_id { get; set; }
+
+    public Blog blog = new Blog();
+    public List<Catagory> catagories = new List<Catagory>();
+
+    protected override void OnInitialized()
+    {
+        blog = BlogsService.GetBlogById(blog_id);
+        catagories = CatagoriesService.GetCatagories();
+    }
+
+    private void HandleValidSubmit()
+    {
+        BlogsService.UpdateBlog(blog);
+        NavigationManager.NavigateTo($"/profile/manage-blogs/{username}");
+    }
+}

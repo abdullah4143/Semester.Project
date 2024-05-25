@@ -1,3 +1,20 @@
 ﻿body {
     background-image : linear-gradient(#56c3e2,#7fbbd3);
 }
+
+.container{
+    background-color:aqua;
+    border-radius: 15px;
+    padding: 20px;
+
+}
+
+img{
+    border-radius: 6px;
+}
+
+.login-container {
+    background-color: aquamarine;
+    border-radius: 6px;
+    padding-right:10px;
+}

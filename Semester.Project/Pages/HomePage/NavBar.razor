@@ -1,56 +1,77 @@
 ﻿@inject UserService UserService
 
-<div class="container-fluid">
-    <nav class="navbar navbar-expand-md bg-opacity-50">
-        <a class="navbar-brand h1" href="#">AUCIS Student Clubs</a>
 
-        <button class="btn btn-outline-success navbar-toggler" type="button" @onclick="ToggleNavMenu">
-            <span class="oi oi-menu"></span>
-        </button>
-        <div class="@NavMenuCssClass" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-                
-                @if (!isVisible)
-                {
+
+
+        <nav class="navbar navbar-expand-md navbar-dark bg-info">
+
+
+            <a class="navbar-brand h1 px-md-5 mx-5 px-sm-2 font-monospace" href="/About">AUCIS Student Clubs</a>
+
+
+
+            <button class="navbar-toggler mx-2 p-2 font-monospace" type="button" @onclick="ToggleNavMenu">
+                <span class="oi oi-menu"></span>
+            </button>
+            <div class="@NavMenuCssClass " id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center font-monospace">
                     <li class="nav-item">
-                        <NavLink class="nav-link px-4" href="/Login">
-                            <span class="oi oi-account-login px-2 text-black">Login</span>
-                        </NavLink>
+                <NavLink class="nav-link px-3 font-monospace" href="/">
+                    <span class="oi oi-home px-2 text-white "></span>Home
+                    
+                </NavLink>
                     </li>
-                }
-                else
-                {
                     <li class="nav-item">
-                        <NavLink class="nav-link px-3" href="@($"/profile/{email}")" Match="NavLinkMatch.All">
-                            <span class="oi oi-person">Hello, @UserName!</span>
+                <NavLink class="nav-link px-3 text-white font-monospace" href="#About">
+                    <span class="oi oi-info px-2 "></span>About Us
+                         </NavLink>
+                    </li>
+                    @if (!isVisible)
+                    {
+                <li class="nav-item  font-monospace">
+                            <NavLink class="nav-link px-3" href="/Login">
+                        <span class="oi oi-account-login px-2 text-white "> </span>Login
+                            </NavLink>
+                        </li>
+                    }
+                    else
+                    {
+
+
+                <li class="nav-item  font-monospace ">
+                    <NavLink class="nav-link px-3 text-white" href="@($"/profile/{username}")">
+                        <span class="oi oi-person text-white"></span> Hello, @username!
+                            </NavLink>
+                        </li>
+                <li class="nav-item  font-monospace text-white">
+                    <NavLink class="nav-link px-3 text-white" href="@($"/create-blog/{username}")">
+                        <span class="oi oi-plus text-white" aria-hidden="true"></span> Create Blog
+                            </NavLink>
+                        </li>
+                <li class="nav-item  font-monospace">
+                        <NavLink class="nav-link px-3" href="/" >
+                            <span class="oi oi-account-logout px-2 text-white"> Logout</span>
                         </NavLink>
                     </li>
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="@($"/create-blog/{email}")" Match="NavLinkMatch.All">
-                            <span class="oi oi-plus" aria-hidden="true"></span> Create Blog
-                        </NavLink>
-                    </li>
-                }
-            </ul>
-        </div>
-    </nav>
-</div>
+                    }
+                </ul>
+            </div>
+        </nav>
+
 
 @code {
     private bool collapseNavMenu = true;
+    
     [Parameter]
     public bool isVisible { get; set; }
+    
     [Parameter]
-    public string? email { get; set; }
+    public string? username { get; set; }
 
-    public string? UserName { get; set; }
 
     protected override void OnInitialized()
     {
-        if (!string.IsNullOrEmpty(email))
-        {
-            UserName = UserService.GetUsernameByEmail(email);
-        }
+       
     }
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse navbar-collapse" : "navbar-collapse";

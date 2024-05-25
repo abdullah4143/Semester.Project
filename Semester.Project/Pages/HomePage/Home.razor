@@ -1,10 +1,10 @@
-﻿@page "/Home/{email?}"
+﻿@page "/Home/{username?}"
 @page "/Home"
 @page "/"
 @layout HomeLayout
 
-<NavBar isVisible="@isUserLoggedIn" email="@email"></NavBar>
-<Body email="@email" />
+<NavBar isVisible="@isUserLoggedIn" username="@username"></NavBar>
+<Body username="@username" />
 
 <Subscribe />
 
@@ -12,7 +12,7 @@
 
 @code {
     [Parameter]
-    public string? email { get; set; } // The email parameter is optional
+    public string? username { get; set; } // The email parameter is optional
 
-    private bool isUserLoggedIn => !string.IsNullOrEmpty(email);
+    private bool isUserLoggedIn => !string.IsNullOrEmpty(username);
 }

@@ -1,4 +1,4 @@
-﻿@page "/profile/{email}"
+﻿@page "/profile/{username}"
 @layout ProfileLayout
 @inject UserService UserService
 
@@ -6,7 +6,7 @@
 <div class="page">
         
     <div class="sidebar">
-        <NavMenu email="@email"></NavMenu>
+        <NavMenu username="@username"></NavMenu>
     </div>
 
     <main>
@@ -19,7 +19,8 @@
 
 @code {
     [Parameter]
-    public string email { get; set; }
+    public string username { get; set; }
+
 
     public User _user = new User();
 
@@ -29,6 +30,7 @@
 
     protected override void OnInitialized()
     {
-        _user = UserService.GetUserByEmail(email);
+        _user = UserService.GetUserByUsername(username);
+
     }
 }
