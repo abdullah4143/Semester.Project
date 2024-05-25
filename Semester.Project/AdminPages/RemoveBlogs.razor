@@ -3,26 +3,28 @@
 @page "/admin/removeblogs"
 @layout AdminLayout
 
-<h3>RemoveBlogs</h3>
-<div class="container">
-
-    @foreach (var item in _blogs)
-    {
-        <div class="card">
-            <div class="card-body">
-                <div class="card-title">@item.title</div>
-                <div class="card-text">@item.content</div>
-                <div class="card-link"><button class="btn btn-outline-danger" @onclick="()=>HandleRemove(item.blog_id)">X</button></div>
+<div class="container p-5 mr-5">
+    <h3 class="font-monospace text-center mb-5">Remove Blogs</h3>
+    <div class="blog-list">
+        @foreach (var item in _blogs)
+        {
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title">@item.title</div>
+                    <div class="card-text">@item.content.Substring(0, Math.Min(50, item.content.Length))</div>
+                    <div class="card-link">
+                        <button class="btn btn-outline-danger" @onclick="()=>HandleRemove(item.blog_id)">X</button>
+                    </div>
+                </div>
             </div>
-        </div>
-    }
-    
+        }
+    </div>
 </div>
 
 @code {
     public List<Blog> _blogs = new List<Blog>();
     public Blog _blog = new Blog();
-    
+
     protected override void OnInitialized()
     {
         _blogs = BlogService.GetBlogs();
@@ -34,3 +36,51 @@
         _blogs = BlogService.GetBlogs();
     }
 }
+
+<style>
+    /* Container */
+    .container {
+        margin-top: 20px;
+    }
+
+    /* Blog card */
+    .card {
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .card-title {
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        margin-bottom: 10px;
+    }
+
+    .card-link {
+        text-align: right;
+    }
+
+    /* Button */
+    .btn-outline-danger {
+        color: #dc3545;
+        border: 1px solid #dc3545;
+        background-color: transparent;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: #fff;
+        }
+</style>

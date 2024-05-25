@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace DataAccessLayer
 {
     public class BlogsService
-    {
-        
+    {     
         public List<Blog> GetBlogs()
         {
             SqlConnection conn = DbConnectionString.GetConnection();

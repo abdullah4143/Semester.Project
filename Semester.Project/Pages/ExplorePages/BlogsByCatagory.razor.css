@@ -3,9 +3,11 @@
     margin: auto;
 }
 
+
 h3 {
     color: #333;
 }
+
 
 .card {
     transition: transform 0.2s, box-shadow 0.2s;

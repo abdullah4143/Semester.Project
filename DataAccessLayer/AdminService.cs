@@ -12,8 +12,6 @@ namespace DataAccessLayer
 	{
         
 
-        // Admin Control Over Users
-
         public bool deleteUser(int id)
 		{
             SqlConnection conn = DbConnectionString.GetConnection();
@@ -26,8 +24,6 @@ namespace DataAccessLayer
             return true;
         
 		}
-
-		// Admin Control Over Catagories
         public void AddCatagory(string cat_name)
         {
             SqlConnection conn = DbConnectionString.GetConnection();
@@ -48,16 +44,10 @@ namespace DataAccessLayer
             cmd.ExecuteNonQuery();
             conn.Close();
         }
-
-		// Admin Control Over Comments
-
 		public bool RemoveComment(int id)
 		{
 			throw new NotImplementedException();
 		}
-
-        // Admin Control Over Blogs
-
         public void deleteBlog(int id)
         {
             SqlConnection conn = DbConnectionString.GetConnection();

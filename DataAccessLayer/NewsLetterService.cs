@@ -10,11 +10,6 @@ namespace DataAccessLayer
 {
     public class NewsLetterService
     {
-        public List<string> GetSubscribers()
-        {
-            throw new NotImplementedException();
-        }
-
         public bool AddSubscriber(NewsLetter n)
         {
             using (SqlConnection conn = DbConnectionString.GetConnection())
@@ -47,9 +42,6 @@ namespace DataAccessLayer
         }
 
 
-        public void RemoveSubscriber(string email)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

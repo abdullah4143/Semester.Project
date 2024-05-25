@@ -1,0 +1,32 @@
+﻿/* Custom styles for registration page */
+.container-fluid {
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); /* Add shadow */
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.img-fluid {
+    border-radius: 10px;
+}
+
+.Dancing {
+    font-family: 'font2';
+}
+
+.btn {
+    background-color: rgb(128, 128, 128);
+    border-color: #007bff;
+    color: white;
+    font-family: cursive;
+}
+
+    .btn:hover {
+        background-color: #065f15;
+        border-color: #0056b3;
+        color: white;
+    }

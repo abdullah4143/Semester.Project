@@ -7,7 +7,7 @@
     <!-- Logo + Text -->
     <div class="row mb-5 align-items-center text-center">
         <div class="col-sm-6 order-sm-2">
-            <img src="/images/bww.jpg" class="img-fluid" alt="Logo">
+            <img src="/images/bww.png" class="img-fluid" alt="Logo">
         </div>
         <div class="col-sm-6 order-sm-1 d-flex flex-column justify-content-center align-items-center">
             <h2 class="text-center mb-3 Dancing1">The Writer's Club</h2>
@@ -18,8 +18,8 @@
     <hr />
 
     <!-- Categories Card -->
-    <section class="categories-section mb-5 text-center Dancing container-fluid pt-3 mt-3">
-        <h2 class="mb-4 font5">Categories</h2>
+    <section class="categories-section mb-5 text-center Dancing container-fluid py-5 my-5">
+        <h2 class="mb-5 font5">Categories</h2>
         <div class="row ">
             @foreach (var category in _catagories.Take(VisibleCount))
             {
@@ -51,8 +51,8 @@
     <hr />
 
     <!-- Blogs Display -->
-    <section class="blogs-section mb-5 text-center mt-3 pt-3">
-        <h2 class="mb-4 font5">Featured Blogs</h2>
+    <section class="blogs-section mb-5 text-center my-5 py-5">
+        <h2 class="mb-5 font5">Featured Blogs</h2>
         <div class="row">
             @foreach (var item in _blogs.Take(3)) // Show only 3 featured blogs
             {
@@ -75,7 +75,7 @@
     <hr />
 
     <!-- Testimonials Section -->
-    <section class="testimonials-section mb-5 text-center">
+    <section class="testimonials-section my-5 py-5 text-center">
         <h2 class="mb-4 font5 mt-3 pt-3">What Our Readers Say</h2>
         <div class="row">
             <div class="col-lg-4 col-md-6 mb-4">
@@ -107,9 +107,9 @@
 
     <!-- Call to Action -->
     <section class="bg-dark text-white text-center py-5">
-        <h2 class="mb-3">Ready to Share Your Story?</h2>
-        <p>Join our community and start writing today!</p>
-        <a href="/create-blog" class="btn btn-outline-info btn-lg p-1 mt-2">Get Writing</a>
+        <h2 class="mb-3 font-monospace">Ready to Share Your Story?</h2>
+        <p class="font-monospace">Join our community and start writing today!</p>
+        <a href="/create-blog" class="btn btn-outline-info btn-sm  mt-3 Dancing2">Get Writing</a>
     </section>
 </div>
 

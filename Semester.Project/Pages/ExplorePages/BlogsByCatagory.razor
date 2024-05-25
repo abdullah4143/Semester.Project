@@ -1,19 +1,20 @@
-﻿@page "/explore/category/{catagory_id:int}/{email?}"
+﻿@page "/explore/category/{catagory_id:int}/{username?}"
 @inject BlogsService BlogsService
 @inject NavigationManager NavigationManager
 @inject CatagoriesService CatagoriesService
 @layout ProfileLayout
 
+<Semester.Project.Pages.HomePage.NavBar isVisible="@isUserLoggedIn" username="@username"></Semester.Project.Pages.HomePage.NavBar>
 <div class="container mt-3">
-    <h3 class="text-center my-4"><strong>Exploring: </strong>@_cat.catagory_name</h3>
+    <h3 class="text-center my-4 font-monospace"><strong>Exploring Category: </strong>@_cat.catagory_name</h3>
 
     <div class="row">
         @foreach (var item in _blogs)
         {
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card h-100">
-                    <div class="card-header bg-primary text-white">
-                        <h5>@item.title</h5>
+                    <div class="card-header bg-info text-white">
+                        <h5 class="font">@item.title</h5>
                     </div>
                     <div class="card-body">
                         <p>@(item.content.Length > 100 ? item.content.Substring(0, 100) + "..." : item.content)</p>
@@ -33,7 +34,9 @@
     public int catagory_id { get; set; }
 
     [Parameter]
-    public string? email { get; set; }
+    public string? username{ get; set; }
+
+    private bool isUserLoggedIn => !string.IsNullOrEmpty(username);
 
     private Catagory _cat = new Catagory();
     private List<Blog> _blogs = new List<Blog>();
@@ -46,6 +49,6 @@
 
     private void HandleExplore(int blog_id)
     {
-        NavigationManager.NavigateTo($"/explore/blogs/{blog_id}/{email}");
+        NavigationManager.NavigateTo($"/explore/blogs/{blog_id}/{username}");
     }
 }

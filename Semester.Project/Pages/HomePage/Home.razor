@@ -3,11 +3,13 @@
 @page "/"
 @layout HomeLayout
 
-<NavBar isVisible="@isUserLoggedIn" username="@username"></NavBar>
-<Body username="@username" />
+<div class="container-fluid outer">
+
+    <NavBar isVisible="@isUserLoggedIn" username="@username"></NavBar>
+    <Body username="@username" />
 
 <Subscribe />
-
+</div>
 <FooterHome />
 
 @code {

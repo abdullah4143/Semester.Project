@@ -45,8 +45,6 @@ namespace DataAccessLayer
 
             return result;
         }
-
-        
         public string GetUsernameById(int id)
         {
             SqlConnection conn = DbConnectionString.GetConnection();
@@ -59,7 +57,6 @@ namespace DataAccessLayer
 
             return username;
         }
-
         public User GetUserByEmail(string email)
         {
             SqlConnection conn = DbConnectionString.GetConnection();
@@ -81,7 +78,6 @@ namespace DataAccessLayer
 
             return user;
         }
-
         public User GetUserByUsername(string username)
         {
             SqlConnection conn = DbConnectionString.GetConnection();
@@ -103,8 +99,6 @@ namespace DataAccessLayer
 
             return user;
         }
-
-
         public bool UpdateUser(User u)
         {
             using (SqlConnection conn = DbConnectionString.GetConnection())
@@ -137,7 +131,6 @@ namespace DataAccessLayer
                 return true;
             }
         }
-
         public int GetUseridByUsername(string username)
         {
             SqlConnection conn = DbConnectionString.GetConnection();

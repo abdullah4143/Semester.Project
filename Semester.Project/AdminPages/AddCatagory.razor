@@ -2,6 +2,10 @@
 @page "/admin/addcatagory"
 @layout AdminLayout
 
+<div class="container p-5 mr-5">
+
+<h3>Add Blog Catagories</h3>
+
 <EditForm Model="_catagory" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -17,7 +21,7 @@
     </div>
 
 </EditForm>
-
+</div>
 
 @code {
     private Catagory _catagory = new Catagory();

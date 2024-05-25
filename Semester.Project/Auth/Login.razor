@@ -8,37 +8,32 @@
     <div class="row">
         <!-- Image column - visible on medium and larger screens -->
         <div class="col-md-6 d-none d-md-block">
-            <img class="img-fluid" src="/login-image.jpg" />
+            <img class="img-fluid login-image" src="/login-image.jpg" />
         </div>
-        <!-- Form column -->
-        <div class="col-md-6 col-sm-12 ">
-            <!-- Takes full width on small screens -->
-            <div class="container-fluid py-5 my-5 login-container">
-                <!-- Text "Login to continue" -->
-                <h2>Login to continue</h2>
+        <div class="col-md-6 col-sm-12">
+            <div class="container-fluid py-5 my-5 login-container shadow">
+                <h2 class="text-center mb-4 Dancing">Login to continue</h2>
 
                 <EditForm Model="_user" OnValidSubmit="HandleValidSubmit">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
 
                     <div class="form-group">
-                        <label for="Email">Email</label>
+                        <label for="Email" class="font-monospace">Email</label>
                         <InputText id="Email" class="form-control" @bind-Value="_user.Email" />
                     </div>
-                    <br />
+
                     <div class="form-group">
-                        <label for="Password">Password</label>
+                        <label for="Password" class="font-monospace">Password</label>
                         <InputText id="Password" type="password" class="form-control" @bind-Value="_user.password" />
                     </div>
-                    <br />
-                    <!-- Center-aligned button -->
-                    <div class="form-group  text-center justify-content-around">
-                        <button type="submit" class="btn btn-primary mx-2">Login</button>
-                        <button type="button" class="btn btn-primary mx-2" @onclick="HandleRegister">Register</button>
 
+                    <!-- Center-aligned button -->
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <button type="button" class="btn btn-primary" @onclick="HandleRegister">Register</button>
                     </div>
 
-                    <br />
                     @if (_showerror)
                     {
                         <div class="alert alert-danger" role="alert">
@@ -70,7 +65,15 @@
         }
         else
         {
-            _showerror = true;
+            verified = AuthServices.VerifyAdmin(_user.Email, _user.password);
+            if (verified)
+            {
+                NM.NavigateTo($"/admin/dashboard/{_user.Email}");
+            }
+            else
+            {
+                _showerror = true;
+            }
         }
     }
 }

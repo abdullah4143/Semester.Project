@@ -10,40 +10,35 @@
         </div>
         <div class="col-md-6 col-sm-12">
             <div class="container-fluid my-5">
-                <h2>Register as a user</h2>
+                <h2 class="text-center mb-4 Dancing">Register as a user</h2>
 
                 <EditForm Model="_user" OnValidSubmit="HandleValidSubmit">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
                     <div class="form-group">
-                        <label for="Name">Name</label>
+                        <label for="Name" class="font-monospace">Name</label>
                         <InputText id="Name" class="form-control" @bind-Value="_user.Name" />
                     </div>
 
-                    <br />
                     <div class="form-group">
-                        <label for="Username">Username</label>
+                        <label for="Username" class="font-monospace">Username</label>
                         <InputText id="Username" class="form-control" @bind-Value="_user.username" />
                     </div>
 
-
                     <div class="form-group">
-                        <label for="Email">Email</label>
+                        <label for="Email" class="font-monospace">Email</label>
                         <InputText id="Email" class="form-control" @bind-Value="_user.Email" />
                     </div>
-                    <br />
+
                     <div class="form-group">
-                        <label for="Password">Password</label>
+                        <label for="Password" class="font-monospace">Password</label>
                         <InputText id="Password" type="password" class="form-control" @bind-Value="_user.password" />
                     </div>
-                    <br />
-                    <!-- Center-aligned button -->
-                    <div class="form-group  text-center justify-content-around">
-                        <button type="submit" class="btn btn-outline-success mx-2">Register</button>
 
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-outline-success">Register</button>
                     </div>
 
-                    <br />
                     @if (_showerror)
                     {
                         <div class="alert alert-danger" role="alert">
@@ -51,11 +46,10 @@
                         </div>
                     }
                 </EditForm>
+
                 @if (sumbitted)
                 {
-                    <p class="alert-success">user registered succesfully
-                        <a href="/Login">Move back to Login Page</a>
-                        </p>
+                    <p class="alert alert-success">User registered successfully. <a href="/Login">Move back to Login Page</a></p>
                 }
             </div>
         </div>

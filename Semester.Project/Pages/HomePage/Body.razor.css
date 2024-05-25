@@ -17,6 +17,12 @@
     font-weight: 900;
     font-size: 70px;
 }
+.Dancing2 {
+    font-family: "Dancing";
+    font-weight: 900;
+    font-size: 30px;
+    border: none;
+}
 
 
 .font3{
@@ -56,6 +62,8 @@
 .card {
     border: none;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: #FFFAEC;
+
 }
 
     .card:hover {
@@ -83,7 +91,7 @@
 /* Testimonials Section */
 .testimonials-section .card {
     padding: 20px;
-    background-color: #f8f9fa;
+    background-color: #FFFAEC;
 }
 
     .testimonials-section .card .blockquote-footer {
@@ -95,7 +103,9 @@
 /* Categories Section */
 .categories-section .card {
     padding: 20px;
-    background-color: #f8f9fa;
+    background-color: #FFFAEC;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
 }
 
     .categories-section .card h5 {
@@ -105,7 +115,9 @@
 /* Blogs Section */
 .blogs-section .card {
     padding: 20px;
-    background-color: #f8f9fa;
+    background-color: #FFFAEC;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
 }
 
     .blogs-section .card .card-header {

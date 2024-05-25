@@ -2,10 +2,13 @@
 @page "/admin/removecatagory"
 @layout AdminLayout
 
-<h3>RemoveCatagory</h3>
+
+<div class="container p-5 mr-5" >
+
+<h3 class="text-center font-monospace mb-5">RemoveCatagory</h3>
 
 <div class="container">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 font-monospace">
         @foreach (var category in _catagories)
         {
             <div class="col mb-4">
@@ -19,7 +22,7 @@
         }
     </div>
 </div>
-
+</div>
 <style>
     .card {
         margin-bottom: 20px;

@@ -1,11 +1,35 @@
-﻿@page "/admin/dashboard"
-@layout AdminLayout
-<h3>AdminDashboard</h3>
+﻿@page "/admin/dashboard/{username}"
+    @layout AdminLayout
 
-<AddCatagory />
-<hr />
-<RemoveCatagory />
-<hr />
-<RemoveUser />
-<hr />
-<RemoveBlogs />
+@if (showerror)
+{
+
+    <div class="container p-5">
+        <h3>Admin Dashboard</h3>
+        <p>Welcome to the admin dashboard. Here you can manage various aspects of your application.</p>
+    </div>
+
+}
+@if (!showerror)
+{
+    <p>This Page is not accesible</p>
+}
+
+
+
+@code {
+    [Parameter]
+    public string username { get; set; } // The email parameter is optional
+    private bool showerror;
+
+    protected override void OnInitialized()
+    {
+        if(username == null)
+        {
+            showerror = false;
+       }
+       else{
+           showerror = true;
+       }
+    }
+}

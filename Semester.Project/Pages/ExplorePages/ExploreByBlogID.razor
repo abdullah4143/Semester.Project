@@ -4,6 +4,9 @@
 @inject UserService UserService
 @layout ProfileLayout
 
+<Semester.Project.Pages.HomePage.NavBar isVisible="@isUserLoggedIn" username="@username"></Semester.Project.Pages.HomePage.NavBar>
+
+
 <div class="container my-5">
     <h3 class="text-center mb-4">Exploring Blog</h3>
 
@@ -60,6 +63,7 @@
     [Parameter]
     public string? username { get; set; }
 
+        private bool isUserLoggedIn => !string.IsNullOrEmpty(username);
 
     private bool _show = false;
 
