@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -118,12 +119,14 @@ namespace DataAccessLayer
                     return false;
                 }
 
+                string hashedPassword = HashPassword(u.password);
+
                 // Proceed with the update
                 string query = "UPDATE users SET username = @username, Email = @Email, password = @password, Name = @Name WHERE user_id = @user_id";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@username", u.username);
                 cmd.Parameters.AddWithValue("@Email", u.Email);
-                cmd.Parameters.AddWithValue("@password", u.password);
+                cmd.Parameters.AddWithValue("@password", hashedPassword);
                 cmd.Parameters.AddWithValue("@Name", u.Name);
                 cmd.Parameters.AddWithValue("@user_id", u.user_id);
 
@@ -131,6 +134,24 @@ namespace DataAccessLayer
                 return true;
             }
         }
+
+        private string HashPassword(string password)
+        {
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - returns byte array
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+                // Convert byte array to a string
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+
         public int GetUseridByUsername(string username)
         {
             SqlConnection conn = DbConnectionString.GetConnection();

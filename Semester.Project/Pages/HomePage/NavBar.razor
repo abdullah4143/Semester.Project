@@ -6,7 +6,7 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-info">
 
 
-            <a class="navbar-brand h1 px-md-5 mx-5 px-sm-2 font-monospace" href="/About">AUCIS Student Clubs</a>
+            <a class="navbar-brand h1 px-md-5 mx-5 px-sm-2 font-monospace" >AUCIS Student Clubs</a>
 
 
 
@@ -15,22 +15,15 @@
             </button>
             <div class="@NavMenuCssClass " id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center font-monospace">
-                    <li class="nav-item">
-                <NavLink class="nav-link px-3 font-monospace" href="/">
-                    <span class="oi oi-home px-2 text-white "></span>Home
-                    
-                </NavLink>
-                    </li>
-                    <li class="nav-item">
-                <NavLink class="nav-link px-3 text-white font-monospace" href="#About">
-                    <span class="oi oi-info px-2 "></span>About Us
-                         </NavLink>
-                    </li>
+
+            
+
+
                     @if (!isVisible)
                     {
                 <li class="nav-item  font-monospace">
-                            <NavLink class="nav-link px-3" href="/Login">
-                        <span class="oi oi-account-login px-2 text-white "> </span>Login
+                            <NavLink class="nav-link px-3 mr-3" href="/Login">
+                        <span class="oi oi-account-login px-2 text-white "></span> Login
                             </NavLink>
                         </li>
                     }

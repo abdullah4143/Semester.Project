@@ -5,6 +5,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
+
 
 
 namespace DataAccessLayer
@@ -13,6 +15,8 @@ namespace DataAccessLayer
     {
         public bool VerifyAdmin(string email, string password)
         {
+
+
             SqlConnection conn = DbConnectionString.GetConnection();
             string query = "SELECT count(*) FROM Admin WHERE Email = @Email AND Password = @Password";
             SqlCommand cmd = new SqlCommand(query, conn);
@@ -34,11 +38,13 @@ namespace DataAccessLayer
         }
         public bool VerifyUser(string email, string password)
         {
+            string hashedPassword = HashPassword(password);
+
             SqlConnection conn = DbConnectionString.GetConnection();
             string query = "SELECT COUNT(*) FROM [users] WHERE Email = @email and password = @password";
             SqlCommand cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@email", email);
-            cmd.Parameters.AddWithValue("@password", password);
+            cmd.Parameters.AddWithValue("@password", hashedPassword);
             conn.Open();
             int count = (int)cmd.ExecuteScalar();
             conn.Close();
@@ -68,13 +74,15 @@ namespace DataAccessLayer
                     return false;
                 }
 
+                string hashedPassword = HashPassword(user.password);
+
                 // Email does not exist, proceed with insertion
                 string insertQuery = "INSERT INTO users (name, email, username, password) VALUES (@name, @email, @username, @password)";
                 SqlCommand insertCmd = new SqlCommand(insertQuery, conn);
                 insertCmd.Parameters.AddWithValue("@name", user.Name);
                 insertCmd.Parameters.AddWithValue("@email", user.Email);
                 insertCmd.Parameters.AddWithValue("@username", user.username);
-                insertCmd.Parameters.AddWithValue("@password", user.password);
+                insertCmd.Parameters.AddWithValue("@password", hashedPassword);
                 insertCmd.ExecuteNonQuery();
 
                 int user_id = GetUseridByEmail(user.Email!);
@@ -102,7 +110,22 @@ namespace DataAccessLayer
 
             return user_id;
         }
+        private string HashPassword(string password)
+        {
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - returns byte array
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
 
+                // Convert byte array to a string
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
     }
 }
  

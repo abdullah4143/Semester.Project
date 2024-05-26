@@ -9,7 +9,8 @@ main {
 }
 
 .sidebar {
-    background-image: linear-gradient(to bottom, #6699ff 0%, #cc3399 90%);
+    
+    background-color:#808080;
     border-radius:15px;
 }
 
